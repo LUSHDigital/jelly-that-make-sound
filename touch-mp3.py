@@ -42,6 +42,12 @@ from glob import glob
 from time import sleep
 from flask import Flask
 
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
 sensor = MPR121.begin()
 sensor.set_touch_threshold(40)
 sensor.set_release_threshold(20)
@@ -90,10 +96,3 @@ while running:
         led.off()
         running = False
     sleep(0.01)
-
-
-app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
