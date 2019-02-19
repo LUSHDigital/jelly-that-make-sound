@@ -10,6 +10,17 @@ from flask import render_template
 import threader
 import threading
 
+class AThread(threading.Thread):
+	def run(self):
+		from time import sleep
+		while True:
+            print "I'm running...and I'll never end!"
+			sleep(5)
+
+	def end(self):
+		if self.is_alive():
+			threader.killThread(self.ident)
+
 class AFlaskThread(threading.Thread):
     def run(self):
         app = Flask(__name__)
@@ -93,6 +104,10 @@ class ASoundsThread(threading.Thread):
 
 
 if __name__ == '__main__':
+    runMe = AThread()
+    runMe.start()
+    sleep(10)
+    runMe.end()
 
     sounds = ASoundsThread()
 
