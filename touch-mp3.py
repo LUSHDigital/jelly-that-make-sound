@@ -71,8 +71,8 @@ def touchThread():
                 if sensor.is_new_touch(i):
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
+                    print (sounds)
                     sound = sounds[i]
-                    print (sound)
                     sound.play()
 
             if is_any_touch_registered:
@@ -95,8 +95,8 @@ def touchThread():
                 if sensor.is_new_touch(i):
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
+                    print (sounds)
                     sound = sounds[i]
-                    print (sound)
                     sound.play()
 
             if is_any_touch_registered:
