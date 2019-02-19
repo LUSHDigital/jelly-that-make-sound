@@ -81,4 +81,3 @@ def touch2():
 
 if __name__ == '__main__':
     Thread(target = flask1).start()
-    Thread(target = touch2).start()
