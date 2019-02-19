@@ -23,12 +23,14 @@ def flaskThread():
     def sounds():
         global mode
         mode= "sounds"
+        print (mode)
         return "nothing"
 
     @app.route('/birthday')
     def birthday():
         global mode
         mode = "birthday"
+        print (mode)
         return "nothing"
 
     app.run(host='0.0.0.0', port= 80)
@@ -101,10 +103,13 @@ def touchThread():
     while running:
         try:
             global mode
+            print (mode)
             if mode == "sounds":
                 play_sounds_when_touched()
+                print ("1")
             elif mode == "birthday":
                 play_birthday_when_touched()
+                print ("2")
             else:
                 print("no mode set")
 
