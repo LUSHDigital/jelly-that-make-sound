@@ -101,9 +101,9 @@ def touchThread():
     while running:
         try:
             global mode
-            if mode = "sounds":
+            if mode == "sounds":
                 play_sounds_when_touched()
-            elif mode ="birthday"
+            elif mode =="birthday"
                 play_birthday_when_touched()
             else:
                 print("no mode set")
