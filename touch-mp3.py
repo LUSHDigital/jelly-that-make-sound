@@ -45,14 +45,19 @@ from flask import render_template
 from threading import Thread
 
 def flask1():
+
+    app = Flask(__name__)
+
     @app.route('/json')
     def json():
         return render_template('json.html')
 
-        @app.route('/background_process_test')
-        def background_process_test():
-            print "Hello"
-            return "nothing"
+    @app.route('/background_process_test')
+    def background_process_test():
+        print "Hello"
+        return "nothing"
+
+    app.run(host='0.0.0.0', port= 80)
 
 def touch2():
     sensor = MPR121.begin()
