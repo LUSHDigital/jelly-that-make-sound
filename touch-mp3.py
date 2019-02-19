@@ -7,115 +7,79 @@ from glob import glob
 from time import sleep
 from flask import Flask
 from flask import render_template
-import threader
-import threading
+from threading import Thread
 
-class AThread(threading.Thread):
-    def run(self):
-        from time import sleep
-        while True:
-            print "I'm running...and I'll never end!"
-            sleep(5)
+def flaskThread():
 
-    def end(self):
-        if self.is_alive():
-            threader.killThread(str(integer).decode(self.ident))
+    app = Flask(__name__)
 
-runMe = AThread()
-runMe.start()
-sleep(10)
-runMe.end()
+    @app.route('/json')
+    def json():
+        return render_template('json.html')
 
-class AFlaskThread(threading.Thread):
-    def run(self):
-        app = Flask(__name__)
+    @app.route('/sounds')
+    def sounds():
+        if (Thread(target = touchThread).is_alive() == FALSE):
+            Thread(target = touchThread).start()
+        return "nothing"
 
-        @app.route('/json')
-        def json():
-            return render_template('json.html')
+    @app.route('/birthday')
+    def birthday():
+        if (Thread(target = touchThread).is_alive() == TRUE):
+            print ("touchThread alive")
+        return "nothing"
 
-        @app.route('/sounds')
-        def sounds():
-            soundsStart()
-            return "nothing"
+    app.run(host='0.0.0.0', port= 80)
 
-        @app.route('/birthday')
-        def birthday():
-            soundsEnd()
-            return "nothing"
+def touchThread():
+    sensor = MPR121.begin()
+    sensor.set_touch_threshold(40)
+    sensor.set_release_threshold(20)
 
-        app.run(host='0.0.0.0', port= 80)
+    led = RGBLED(6, 5, 26, active_high=False)
 
-    def end(self):
-        if self.is_alive():
-            threader.killThread(self.ident)
+    num_electrodes = 12
 
-class ASoundsThread(threading.Thread):
-    def run(self):
-        sensor = MPR121.begin()
-        sensor.set_touch_threshold(40)
-        sensor.set_release_threshold(20)
+    # convert mp3s to wavs with picap-samples-to-wav
+    led.blue = 1
+    subprocess.call("picap-samples-to-wav tracks", shell=True)
+    led.off()
 
-        led = RGBLED(6, 5, 26, active_high=False)
+    # initialize mixer and pygame
+    pygame.mixer.pre_init(frequency=44100, channels=64, buffer=1024)
+    pygame.init()
 
-        num_electrodes = 12
+    sounds = [Sound(path) for path in glob("tracks/.wavs/*.wav")]
 
-        # convert mp3s to wavs with picap-samples-to-wav
-        led.blue = 1
-        subprocess.call("picap-samples-to-wav tracks", shell=True)
-        led.off()
+    def play_sounds_when_touched():
+        if sensor.touch_status_changed():
+            sensor.update_touch_data()
 
-        # initialize mixer and pygame
-        pygame.mixer.pre_init(frequency=44100, channels=64, buffer=1024)
-        pygame.init()
+            is_any_touch_registered = False
 
-        sounds = [Sound(path) for path in glob("tracks/.wavs/*.wav")]
+            for i in range(num_electrodes):
+                if sensor.get_touch_data(i):
+                    # check if touch is registered to set the led status
+                    is_any_touch_registered = True
+                if sensor.is_new_touch(i):
+                    # play sound associated with that touch
+                    print ("playing sound: " + str(i))
+                    sound = sounds[i]
+                    sound.play()
 
-        def play_sounds_when_touched():
-            if sensor.touch_status_changed():
-                sensor.update_touch_data()
-
-                is_any_touch_registered = False
-
-                for i in range(num_electrodes):
-                    if sensor.get_touch_data(i):
-                        # check if touch is registered to set the led status
-                        is_any_touch_registered = True
-                    if sensor.is_new_touch(i):
-                        # play sound associated with that touch
-                        print ("playing sound: " + str(i))
-                        sound = sounds[i]
-                        sound.play()
-
-                if is_any_touch_registered:
-                    led.red = 1
-                else:
-                    led.off()
-
-        running = True
-        while running:
-            try:
-                play_sounds_when_touched()
-            except KeyboardInterrupt:
+            if is_any_touch_registered:
+                led.red = 1
+            else:
                 led.off()
-                running = False
-            sleep(0.01)
 
-    def end(self):
-        print ("self = " + self)
-        print ("self.ident = " + self.ident)
-        if self.is_alive():
-            threader.killThread(self.ident)
-
+    running = True
+    while running:
+        try:
+            play_sounds_when_touched()
+        except KeyboardInterrupt:
+            led.off()
+            running = False
+        sleep(0.01)
 
 if __name__ == '__main__':
-    sounds = ASoundsThread()
-
-    def soundsStart():
-        sounds.start()
-
-    def soundsEnd():
-        sounds.end()
-
-    flask = AFlaskThread()
-    flask.start()
+    Thread(target = flaskThread).start()
