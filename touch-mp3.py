@@ -28,6 +28,7 @@ def flaskThread():
     def birthday():
         print (Thread(target = touchThread).is_alive())
         if (Thread(target = touchThread).is_alive() == "True"):
+            print ("touchThread alive")
         return "nothing"
 
     app.run(host='0.0.0.0', port= 80)
