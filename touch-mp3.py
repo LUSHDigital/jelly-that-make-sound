@@ -20,14 +20,12 @@ class AFlaskThread(threading.Thread):
 
         @app.route('/sounds')
         def sounds():
-            if (Thread(target = touch2).is_alive() == FALSE):
-                sounds.start()
+            sounds.start()
             return "nothing"
 
         @app.route('/birthday')
         def birthday():
-            if (Thread(target = touch2).is_alive() == TRUE):
-                sounds.end()
+            sounds.end()
             return "nothing"
 
         app.run(host='0.0.0.0', port= 80)
