@@ -1,7 +1,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
         $(function() {
-          $('a#sound').bind('click', function() {
+          $('a#sounds').bind('click', function() {
             $.getJSON('/sounds',
                 function(data) {
               //do nothing
@@ -23,7 +23,7 @@
 <div class='container'>
     <h3>Jelly that make sound control</h3>
         <form>
-            <a href=# id=sound><button class='btn btn-default'>Sound Effects</button></a>
+            <a href=# id=sounds><button class='btn btn-default'>Sound Effects</button></a>
         </form>
         <form>
             <a href=# id=birthday><button class='btn btn-default'>Birthday Mode</button></a>
