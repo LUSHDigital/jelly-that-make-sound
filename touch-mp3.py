@@ -94,10 +94,10 @@ if __name__ == '__main__':
 
     sounds = ASoundsThread()
 
-    def soundsStart:
+    def soundsStart():
         sounds.start()
 
-    def soundsEnd:
+    def soundsEnd():
         sounds.end()
 
     flask = AFlaskThread()
