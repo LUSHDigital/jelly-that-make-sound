@@ -10,6 +10,7 @@ from flask import render_template
 from threading import Thread
 
 mode = "sounds"
+sound = []
 
 def flaskThread():
 
@@ -56,6 +57,7 @@ def touchThread():
 
 
     def play_sounds_when_touched():
+        global sounds
         sounds = [Sound(path) for path in glob("tracks/.wavs/*.wav")]
         if sensor.touch_status_changed():
             sensor.update_touch_data()
@@ -79,6 +81,7 @@ def touchThread():
                 led.off()
 
     def play_birthday_when_touched():
+        global sounds
         sounds = [Sound(path) for path in glob("birthday-tracks/.wavs/*.wav")]
         if sensor.touch_status_changed():
             sensor.update_touch_data()
