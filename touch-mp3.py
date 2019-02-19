@@ -19,15 +19,12 @@ def flaskThread():
 
     @app.route('/sounds')
     def sounds():
-        if (Thread(target = touchThread).is_alive() == False):
-            Thread(target = touchThread).start()
+        touchThreadStart()
         return "nothing"
 
     @app.route('/birthday')
     def birthday():
         print (Thread(target = touchThread).is_alive())
-        if (Thread(target = touchThread).is_alive() == True):
-            print ("touchThread alive")
         return "nothing"
 
     app.run(host='0.0.0.0', port= 80)
@@ -83,4 +80,14 @@ def touchThread():
         sleep(0.01)
 
 if __name__ == '__main__':
-    Thread(target = flaskThread).start()
+    def flaskThreadStart():
+        if (Thread(target = flaskThread).is_alive() == False):
+            Thread(target = flaskThread).start()
+        else:
+            print ("flaskThread already running")
+
+    def touchThreadStart():
+        if (Thread(target = touchThread).is_alive() == False):
+            Thread(target = touchThread).start()
+        else:
+            print ("touchThread already running")
