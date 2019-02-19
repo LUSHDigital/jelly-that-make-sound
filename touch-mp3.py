@@ -87,6 +87,5 @@ def touchThread():
         sleep(0.01)
 
 if __name__ == '__main__':
-    flaskThreadStart()
     Thread(target = touchThread).start()
     Thread(target = flaskThread).start()
