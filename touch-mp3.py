@@ -41,9 +41,22 @@ from pygame.mixer import Sound
 from glob import glob
 from time import sleep
 from flask import Flask
+from flask import render_template
 from threading import Thread
 
 def flask1():
+    //rendering the HTML page which has the button
+    @app.route('/json')
+    def json():
+        return render_template('json.html')
+
+        //background process happening without any refreshing
+        @app.route('/background_process_test')
+        def background_process_test():
+            print "Hello"
+            return "nothing"
+
+def touch2():
     sensor = MPR121.begin()
     sensor.set_touch_threshold(40)
     sensor.set_release_threshold(20)
@@ -92,15 +105,6 @@ def flask1():
             led.off()
             running = False
         sleep(0.01)
-
-def touch2():
-    app = Flask(__name__)
-
-    @app.route('/hello')
-    def helloIndex():
-        return 'Hello World from Python Flask!'
-
-    app.run(host='0.0.0.0', port= 80)
 
 if __name__ == '__main__':
     Thread(target = flask1).start()
