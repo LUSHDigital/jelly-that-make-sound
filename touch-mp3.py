@@ -11,7 +11,7 @@ import threader
 import threading
 
 class AFlaskThread(threading.Thread):
-	def run(self):
+    def run(self):
         app = Flask(__name__)
 
         @app.route('/json')
@@ -37,7 +37,7 @@ class AFlaskThread(threading.Thread):
 			threader.killThread(self.ident)
 
 class ASoundThread(threading.Thread):
-	def run(self):
+    def run(self):
         sensor = MPR121.begin()
         sensor.set_touch_threshold(40)
         sensor.set_release_threshold(20)
