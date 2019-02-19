@@ -21,6 +21,11 @@ class AThread(threading.Thread):
         if self.is_alive():
             threader.killThread(self.ident)
 
+runMe = AThread()
+runMe.start()
+sleep(10)
+runMe.end()
+
 class AFlaskThread(threading.Thread):
     def run(self):
         app = Flask(__name__)
@@ -104,11 +109,6 @@ class ASoundsThread(threading.Thread):
 
 
 if __name__ == '__main__':
-    runMe = AThread()
-    runMe.start()
-    sleep(10)
-    runMe.end()
-
     sounds = ASoundsThread()
 
     def soundsStart():
