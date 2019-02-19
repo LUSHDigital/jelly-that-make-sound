@@ -25,6 +25,7 @@ def flaskThread():
 
     @app.route('/birthday')
     def birthday():
+        print (Thread(target = touchThread).is_alive())
         if (Thread(target = touchThread).is_alive() == TRUE):
             print ("touchThread alive")
         return "nothing"
