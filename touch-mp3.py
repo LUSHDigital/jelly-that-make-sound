@@ -78,18 +78,18 @@ def touchThread():
             led.off()
             running = False
         sleep(0.01)
+        
+def flaskThreadStart():
+    if (Thread(target = flaskThread).is_alive() == False):
+        Thread(target = flaskThread).start()
+    else:
+        print ("flaskThread already running")
+
+def touchThreadStart():
+    if (Thread(target = touchThread).is_alive() == False):
+        Thread(target = touchThread).start()
+    else:
+        print ("touchThread already running")
 
 if __name__ == '__main__':
-    def flaskThreadStart():
-        if (Thread(target = flaskThread).is_alive() == False):
-            Thread(target = flaskThread).start()
-        else:
-            print ("flaskThread already running")
-
-    def touchThreadStart():
-        if (Thread(target = touchThread).is_alive() == False):
-            Thread(target = touchThread).start()
-        else:
-            print ("touchThread already running")
-
     flaskThreadStart()
