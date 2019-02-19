@@ -40,6 +40,7 @@ import pygame
 from pygame.mixer import Sound
 from glob import glob
 from time import sleep
+from flask import Flask
 
 sensor = MPR121.begin()
 sensor.set_touch_threshold(40)
@@ -89,3 +90,10 @@ while running:
         led.off()
         running = False
     sleep(0.01)
+
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
