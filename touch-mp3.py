@@ -71,7 +71,6 @@ def touchThread():
                 if sensor.is_new_touch(i):
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
-                    print (sounds)
                     sound = sounds[i]
                     sound.play()
 
@@ -95,7 +94,6 @@ def touchThread():
                 if sensor.is_new_touch(i):
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
-                    print (sounds)
                     sound = sounds[i]
                     sound.play()
 
@@ -108,13 +106,10 @@ def touchThread():
     while running:
         try:
             global mode
-            print (mode)
             if mode == "sounds":
                 play_sounds_when_touched()
-                print ("1")
             elif mode == "birthday":
                 play_birthday_when_touched()
-                print ("2")
             else:
                 print("no mode set")
 
