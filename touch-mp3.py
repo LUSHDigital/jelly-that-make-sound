@@ -70,6 +70,7 @@ def touchThread():
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
                     sound = sounds[i]
+                    print (sound)
                     sound.play()
 
             if is_any_touch_registered:
@@ -92,6 +93,7 @@ def touchThread():
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
                     sound = sounds[i]
+                    print (sound)
                     sound.play()
 
             if is_any_touch_registered:
