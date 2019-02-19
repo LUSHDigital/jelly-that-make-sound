@@ -91,3 +91,5 @@ if __name__ == '__main__':
             Thread(target = touchThread).start()
         else:
             print ("touchThread already running")
+
+    flaskThreadStart()
