@@ -11,15 +11,15 @@ import threader
 import threading
 
 class AThread(threading.Thread):
-	def run(self):
-		from time import sleep
-		while True:
+    def run(self):
+        from time import sleep
+        while True:
             print "I'm running...and I'll never end!"
-			sleep(5)
+            sleep(5)
 
-	def end(self):
-		if self.is_alive():
-			threader.killThread(self.ident)
+    def end(self):
+        if self.is_alive():
+            threader.killThread(self.ident)
 
 class AFlaskThread(threading.Thread):
     def run(self):
