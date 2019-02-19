@@ -87,6 +87,7 @@ class ASoundsThread(threading.Thread):
 
     def end(self):
         if self.is_alive():
+            print (self.ident)
             threader.killThread(self.ident)
 
 
