@@ -19,7 +19,7 @@ class AThread(threading.Thread):
 
     def end(self):
         if self.is_alive():
-            threader.killThread(str(integer).decode(self.ident)
+            threader.killThread(str(integer).decode(self.ident))
 
 runMe = AThread()
 runMe.start()
