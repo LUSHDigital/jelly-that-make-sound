@@ -9,6 +9,8 @@ from flask import Flask
 from flask import render_template
 from threading import Thread
 
+sounds = 0
+
 def flaskThread():
 
     app = Flask(__name__)
@@ -19,12 +21,14 @@ def flaskThread():
 
     @app.route('/sounds')
     def sounds():
-        touchThreadStart()
+        global sounds
+        sounds = [Sound(path) for path in glob("tracks/.wavs/*.wav")]
         return "nothing"
 
     @app.route('/birthday')
     def birthday():
-        print (Thread(target = touchThread).is_alive())
+        global sounds
+        sounds = [Sound(path) for path in glob("birthday-tracks/.wavs/*.wav")]
         return "nothing"
 
     app.run(host='0.0.0.0', port= 80)
@@ -41,11 +45,14 @@ def touchThread():
     # convert mp3s to wavs with picap-samples-to-wav
     led.blue = 1
     subprocess.call("picap-samples-to-wav tracks", shell=True)
+    subprocess.call("picap-samples-to-wav birthday-tracks", shell=True)
     led.off()
 
     # initialize mixer and pygame
     pygame.mixer.pre_init(frequency=44100, channels=64, buffer=1024)
     pygame.init()
+
+    global sounds
 
     sounds = [Sound(path) for path in glob("tracks/.wavs/*.wav")]
 
@@ -78,18 +85,8 @@ def touchThread():
             led.off()
             running = False
         sleep(0.01)
-        
-def flaskThreadStart():
-    if (Thread(target = flaskThread).is_alive() == False):
-        Thread(target = flaskThread).start()
-    else:
-        print ("flaskThread already running")
-
-def touchThreadStart():
-    if (Thread(target = touchThread).is_alive() == False):
-        Thread(target = touchThread).start()
-    else:
-        print ("touchThread already running")
 
 if __name__ == '__main__':
     flaskThreadStart()
+    Thread(target = touchThread).start()
+    Thread(target = flaskThread).start()
