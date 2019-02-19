@@ -28,7 +28,7 @@ def flaskThread():
     @app.route('/birthday')
     def birthday():
         global mode
-        smode = "birthday"
+        mode = "birthday"
         return "nothing"
 
     app.run(host='0.0.0.0', port= 80)
