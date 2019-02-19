@@ -16,7 +16,7 @@ def flaskThread():
 
     app = Flask(__name__)
 
-    @app.route('/json')
+    @app.route('/')
     def json():
         return render_template('json.html')
 
