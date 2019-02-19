@@ -29,12 +29,12 @@ class AFlaskThread(threading.Thread):
             return "nothing"
 
         app.run(host='0.0.0.0', port= 80)
+        
+    def end(self):
+        if self.is_alive():
+            threader.killThread(self.ident)
 
-	def end(self):
-		if self.is_alive():
-			threader.killThread(self.ident)
-
-class ASoundThread(threading.Thread):
+class ASoundsThread(threading.Thread):
     def run(self):
         sensor = MPR121.begin()
         sensor.set_touch_threshold(40)
@@ -85,12 +85,12 @@ class ASoundThread(threading.Thread):
                 running = False
             sleep(0.01)
 
-	def end(self):
-		if self.is_alive():
-			threader.killThread(self.ident)
+    def end(self):
+        if self.is_alive():
+            threader.killThread(self.ident)
 
 
 if __name__ == '__main__':
     flask = AFlaskThread()
     flask.start()
-    sounds = ASoundThread()
+    sounds = ASoundsThread()
