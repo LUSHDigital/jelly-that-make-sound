@@ -18,12 +18,12 @@ def flask1():
         return render_template('json.html')
 
     @app.route('/sounds')
-    def background_process_test():
+    def sounds():
         Thread(target = touch2).start()
         return "nothing"
 
     @app.route('/birthday')
-    def background_process_test():
+    def birthday():
         Thread(target = touch2).stop()
         return "nothing"
 
