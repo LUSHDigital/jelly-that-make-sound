@@ -20,16 +20,16 @@ class AFlaskThread(threading.Thread):
 
         @app.route('/sounds')
         def sounds():
-            sounds.start()
+            soundsStart()
             return "nothing"
 
         @app.route('/birthday')
         def birthday():
-            sounds.end()
+            soundsEnd()
             return "nothing"
 
         app.run(host='0.0.0.0', port= 80)
-        
+
     def end(self):
         if self.is_alive():
             threader.killThread(self.ident)
@@ -91,6 +91,14 @@ class ASoundsThread(threading.Thread):
 
 
 if __name__ == '__main__':
+
+    sounds = ASoundsThread()
+
+    def soundsStart:
+        sounds.start()
+
+    def soundsEnd:
+        sounds.end()
+
     flask = AFlaskThread()
     flask.start()
-    sounds = ASoundsThread()
