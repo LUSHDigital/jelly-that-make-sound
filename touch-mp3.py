@@ -69,7 +69,7 @@ def touchThread():
                     # check if touch is registered to set the led status
                     is_any_touch_registered = True
                 if sensor.is_new_touch(i):
-                    if str(i) == "0"
+                    if str(i) == "0":
                         print ("Hello 0")
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
