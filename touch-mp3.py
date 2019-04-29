@@ -70,7 +70,10 @@ def touchThread():
                     is_any_touch_registered = True
                 if sensor.is_new_touch(i):
                     if str(i) == "0":
-                        play_birthday_when_touched()
+                        global mode
+                        mode = "birthday"
+                        print (mode)
+                        return "nothing"
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
                     sound = sounds[i]
@@ -95,7 +98,10 @@ def touchThread():
                     is_any_touch_registered = True
                 if sensor.is_new_touch(i):
                     if str(i) == "0":
-                        play_sounds_when_touched()
+                        global mode
+                        mode= "sounds"
+                        print (mode)
+                        return "nothing"
                     # play sound associated with that touch
                     print ("playing sound: " + str(i))
                     sound = sounds[i]
