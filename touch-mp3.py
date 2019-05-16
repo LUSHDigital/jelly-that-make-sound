@@ -63,8 +63,8 @@ def touchThread():
     led.blue = 1
     subprocess.call("picap-samples-to-wav tracks", shell=True)
     subprocess.call("picap-samples-to-wav birthday-tracks", shell=True)
-    ubprocess.call("picap-samples-to-wav arp-tracks", shell=True)
-    ubprocess.call("picap-samples-to-wav proto-tracks", shell=True)
+    subprocess.call("picap-samples-to-wav arp-tracks", shell=True)
+    subprocess.call("picap-samples-to-wav proto-tracks", shell=True)
     led.off()
 
     # initialize mixer and pygame
