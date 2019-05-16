@@ -18,6 +18,24 @@
             return false;
           });
         });
+        $(function() {
+          $('a#arp').bind('click', function() {
+            $.getJSON('/arp',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+        $(function() {
+          $('a#proto').bind('click', function() {
+            $.getJSON('/proto',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
 </script>
 
 <div class='container'>
@@ -27,5 +45,11 @@
         </form>
         <form>
             <a href=# id=birthday><button class='btn btn-default'>Birthday Mode</button></a>
+        </form>
+        <form>
+            <a href=# id=arp><button class='btn btn-default'>Arp Mode</button></a>
+        </form>
+        <form>
+            <a href=# id=proto><button class='btn btn-default'>Proto Mode</button></a>
         </form>
 </div>

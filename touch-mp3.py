@@ -34,6 +34,20 @@ def flaskThread():
         print (mode)
         return "nothing"
 
+    @app.route('/arp')
+    def arp():
+        global mode
+        mode = "arp"
+        print (mode)
+        return "arp"
+
+    @app.route('/proto')
+    def proto():
+        global mode
+        mode = "proto"
+        print (mode)
+        return "proto"
+
     app.run(host='0.0.0.0', port= 80)
 
 def touchThread():
@@ -49,6 +63,8 @@ def touchThread():
     led.blue = 1
     subprocess.call("picap-samples-to-wav tracks", shell=True)
     subprocess.call("picap-samples-to-wav birthday-tracks", shell=True)
+    ubprocess.call("picap-samples-to-wav arp-tracks", shell=True)
+    ubprocess.call("picap-samples-to-wav proto-tracks", shell=True)
     led.off()
 
     # initialize mixer and pygame
@@ -102,6 +118,52 @@ def touchThread():
             else:
                 led.off()
 
+    def play_arp_when_touched():
+        global sounds
+        sounds = [Sound(path) for path in glob("arp-tracks/.wavs/*.wav")]
+        if sensor.touch_status_changed():
+            sensor.update_touch_data()
+
+            is_any_touch_registered = False
+
+            for i in range(num_electrodes):
+                if sensor.get_touch_data(i):
+                    # check if touch is registered to set the led status
+                    is_any_touch_registered = True
+                if sensor.is_new_touch(i):
+                    # play sound associated with that touch
+                    print ("playing sound: " + str(i))
+                    sound = sounds[i]
+                    sound.play()
+
+            if is_any_touch_registered:
+                led.red = 1
+            else:
+                led.off()
+
+    def play_proto_when_touched():
+        global sounds
+        sounds = [Sound(path) for path in glob("proto-tracks/.wavs/*.wav")]
+        if sensor.touch_status_changed():
+            sensor.update_touch_data()
+
+            is_any_touch_registered = False
+
+            for i in range(num_electrodes):
+                if sensor.get_touch_data(i):
+                    # check if touch is registered to set the led status
+                    is_any_touch_registered = True
+                if sensor.is_new_touch(i):
+                    # play sound associated with that touch
+                    print ("playing sound: " + str(i))
+                    sound = sounds[i]
+                    sound.play()
+
+            if is_any_touch_registered:
+                led.red = 1
+            else:
+                led.off()
+
     running = True
     while running:
         try:
@@ -110,6 +172,10 @@ def touchThread():
                 play_sounds_when_touched()
             elif mode == "birthday":
                 play_birthday_when_touched()
+            elif mode == "arp":
+                play_arp_when_touched()
+            elif mode == "proto":
+                play_proto_when_touched()
             else:
                 print("no mode set")
 
