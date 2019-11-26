@@ -36,6 +36,15 @@
             return false;
           });
         });
+        $(function() {
+          $('a#xmas').bind('click', function() {
+            $.getJSON('/xmas',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
 </script>
 
 <div class='container'>
@@ -51,5 +60,8 @@
         </form>
         <form>
             <a href=# id=proto><button class='btn btn-default'>Proto Mode</button></a>
+        </form>
+        <form>
+            <a href=# id=xmas><button class='btn btn-default'>Xmas Mode</button></a>
         </form>
 </div>

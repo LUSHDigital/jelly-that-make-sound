@@ -12,43 +12,52 @@ from threading import Thread
 mode = "sounds"
 sound = []
 
+
 def flaskThread():
 
     app = Flask(__name__)
 
-    @app.route('/')
+    @app.route("/")
     def json():
-        return render_template('json.html')
+        return render_template("json.html")
 
-    @app.route('/sounds')
+    @app.route("/sounds")
     def sounds():
         global mode
-        mode= "sounds"
-        print (mode)
+        mode = "sounds"
+        print(mode)
         return "nothing"
 
-    @app.route('/birthday')
+    @app.route("/birthday")
     def birthday():
         global mode
         mode = "birthday"
-        print (mode)
+        print(mode)
         return "nothing"
 
-    @app.route('/arp')
+    @app.route("/arp")
     def arp():
         global mode
         mode = "arp"
-        print (mode)
+        print(mode)
         return "arp"
 
-    @app.route('/proto')
+    @app.route("/proto")
     def proto():
         global mode
         mode = "proto"
-        print (mode)
+        print(mode)
         return "proto"
 
-    app.run(host='0.0.0.0', port= 80)
+    @app.route("/xmas")
+    def xmas():
+        global mode
+        mode = "xmas"
+        print(mode)
+        return "xmas"
+
+    app.run(host="0.0.0.0", port=80)
+
 
 def touchThread():
     sensor = MPR121.begin()
@@ -65,12 +74,12 @@ def touchThread():
     subprocess.call("picap-samples-to-wav birthday-tracks", shell=True)
     subprocess.call("picap-samples-to-wav arp-tracks", shell=True)
     subprocess.call("picap-samples-to-wav proto-tracks", shell=True)
+    subprocess.call("picap-samples-to-wav xmas-tracks", shell=True)
     led.off()
 
     # initialize mixer and pygame
     pygame.mixer.pre_init(frequency=44100, channels=64, buffer=1024)
     pygame.init()
-
 
     def play_sounds_when_touched():
         global sounds
@@ -86,7 +95,7 @@ def touchThread():
                     is_any_touch_registered = True
                 if sensor.is_new_touch(i):
                     # play sound associated with that touch
-                    print ("playing sound: " + str(i))
+                    print("playing sound: " + str(i))
                     sound = sounds[i]
                     sound.play()
 
@@ -109,7 +118,7 @@ def touchThread():
                     is_any_touch_registered = True
                 if sensor.is_new_touch(i):
                     # play sound associated with that touch
-                    print ("playing sound: " + str(i))
+                    print("playing sound: " + str(i))
                     sound = sounds[i]
                     sound.play()
 
@@ -132,7 +141,7 @@ def touchThread():
                     is_any_touch_registered = True
                 if sensor.is_new_touch(i):
                     # play sound associated with that touch
-                    print ("playing sound: " + str(i))
+                    print("playing sound: " + str(i))
                     sound = sounds[i]
                     sound.play()
 
@@ -155,7 +164,30 @@ def touchThread():
                     is_any_touch_registered = True
                 if sensor.is_new_touch(i):
                     # play sound associated with that touch
-                    print ("playing sound: " + str(i))
+                    print("playing sound: " + str(i))
+                    sound = sounds[i]
+                    sound.play()
+
+            if is_any_touch_registered:
+                led.red = 1
+            else:
+                led.off()
+
+    def play_xmas_when_touched():
+        global sounds
+        sounds = [Sound(path) for path in glob("xmas-tracks/.wavs/*.wav")]
+        if sensor.touch_status_changed():
+            sensor.update_touch_data()
+
+            is_any_touch_registered = False
+
+            for i in range(num_electrodes):
+                if sensor.get_touch_data(i):
+                    # check if touch is registered to set the led status
+                    is_any_touch_registered = True
+                if sensor.is_new_touch(i):
+                    # play sound associated with that touch
+                    print("playing sound: " + str(i))
                     sound = sounds[i]
                     sound.play()
 
@@ -176,6 +208,8 @@ def touchThread():
                 play_arp_when_touched()
             elif mode == "proto":
                 play_proto_when_touched()
+            elif mode == "xmas":
+                play_xmas_when_touched()
             else:
                 print("no mode set")
 
@@ -184,6 +218,7 @@ def touchThread():
             running = False
         sleep(0.01)
 
-if __name__ == '__main__':
-    Thread(target = touchThread).start()
-    Thread(target = flaskThread).start()
+
+if __name__ == "__main__":
+    Thread(target=touchThread).start()
+    Thread(target=flaskThread).start()
