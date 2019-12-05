@@ -45,6 +45,15 @@
             return false;
           });
         });
+        $(function() {
+          $('a#jingle').bind('click', function() {
+            $.getJSON('/jingle',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
 </script>
 
 <div class='container'>
@@ -63,5 +72,8 @@
         </form>
         <form>
             <a href=# id=xmas><button class='btn btn-default'>Xmas Mode</button></a>
+        </form>
+        <form>
+            <a href=# id=jingle><button class='btn btn-default'>Jingle Mode</button></a>
         </form>
 </div>

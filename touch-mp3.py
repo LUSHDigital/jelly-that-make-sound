@@ -56,6 +56,13 @@ def flaskThread():
         print(mode)
         return "xmas"
 
+    @app.route("/jingle")
+    def jingle():
+        global mode
+        mode = "jingle"
+        print(mode)
+        return "jingle"
+
     app.run(host="0.0.0.0", port=80)
 
 
@@ -75,6 +82,7 @@ def touchThread():
     subprocess.call("picap-samples-to-wav arp-tracks", shell=True)
     subprocess.call("picap-samples-to-wav proto-tracks", shell=True)
     subprocess.call("picap-samples-to-wav xmas-tracks", shell=True)
+    subprocess.call("picap-samples-to-wav jingle-tracks", shell=True)
     led.off()
 
     # initialize mixer and pygame
@@ -196,6 +204,29 @@ def touchThread():
             else:
                 led.off()
 
+    def play_jingle_when_touched():
+        global sounds
+        sounds = [Sound(path) for path in glob("jingle-tracks/.wavs/*.wav")]
+        if sensor.touch_status_changed():
+            sensor.update_touch_data()
+
+            is_any_touch_registered = False
+
+            for i in range(num_electrodes):
+                if sensor.get_touch_data(i):
+                    # check if touch is registered to set the led status
+                    is_any_touch_registered = True
+                if sensor.is_new_touch(i):
+                    # play sound associated with that touch
+                    print("playing sound: " + str(i))
+                    sound = sounds[i]
+                    sound.play()
+
+            if is_any_touch_registered:
+                led.red = 1
+            else:
+                led.off()
+
     running = True
     while running:
         try:
@@ -210,6 +241,8 @@ def touchThread():
                 play_proto_when_touched()
             elif mode == "xmas":
                 play_xmas_when_touched()
+            elif mode == "jingle":
+                play_jingle_when_touched()
             else:
                 print("no mode set")
 
